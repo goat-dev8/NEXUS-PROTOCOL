@@ -1,17 +1,18 @@
-import { http, createConfig } from 'wagmi'
-import { polygon, polygonAmoy } from 'wagmi/chains'
-import { injected, walletConnect } from 'wagmi/connectors'
+import { getDefaultConfig } from "@rainbow-me/rainbowkit";
+import { http } from "wagmi";
+import { polygon } from "wagmi/chains";
 
-const projectId = 'nexus-protocol-defi'
+// WalletConnect Project ID - Replace with your own for production
+const WALLETCONNECT_PROJECT_ID =
+  import.meta.env.VITE_WALLETCONNECT_PROJECT_ID || "nexus-protocol-defi";
 
-export const config = createConfig({
-  chains: [polygon, polygonAmoy],
-  connectors: [
-    injected(),
-    walletConnect({ projectId }),
-  ],
+export const config = getDefaultConfig({
+  appName: "NEXUS Protocol",
+  projectId: WALLETCONNECT_PROJECT_ID,
+  chains: [polygon],
   transports: {
-    [polygon.id]: http(),
-    [polygonAmoy.id]: http(),
+    [polygon.id]: http("https://polygon-rpc.com"),
   },
-})
+});
+
+export { polygon };

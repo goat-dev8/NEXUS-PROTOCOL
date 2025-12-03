@@ -1,30 +1,45 @@
+import { Footer } from "@/components/layout/Footer";
+import { GlassCard } from "@/components/ui/glass-card";
 import { GradientButton } from "@/components/ui/gradient-button";
 import { OutlineButton } from "@/components/ui/outline-button";
-import { GlassCard } from "@/components/ui/glass-card";
-import { Footer } from "@/components/layout/Footer";
-import { Shield, Lock, Ghost, Brain, TrendingUp, Vault, Zap } from "lucide-react";
-import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
 import { SUPPORTED_PROTOCOLS } from "@/lib/constants";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { motion } from "framer-motion";
+import {
+  Brain,
+  Ghost,
+  Lock,
+  Shield,
+  TrendingUp,
+  Vault,
+  Wallet,
+  Zap,
+} from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useAccount } from "wagmi";
 
 export default function Landing() {
   const navigate = useNavigate();
+  const { isConnected } = useAccount();
 
   const features = [
     {
       icon: <Lock className="h-8 w-8" />,
       title: "ZK-Shielded Vaults",
-      description: "Provide liquidity anonymously with zero-knowledge proofs. Your funds, your privacy.",
+      description:
+        "Provide liquidity anonymously with zero-knowledge proofs. Your funds, your privacy.",
     },
     {
       icon: <Brain className="h-8 w-8" />,
       title: "NEXUS AI Agent",
-      description: "Autonomous AI optimizes your yields 24/7 across multiple protocols.",
+      description:
+        "Autonomous AI optimizes your yields 24/7 across multiple protocols.",
     },
     {
       icon: <Ghost className="h-8 w-8" />,
       title: "Stealth Payments",
-      description: "Send funds via @username without revealing your wallet address.",
+      description:
+        "Send funds via @username without revealing your wallet address.",
     },
   ];
 
@@ -32,7 +47,10 @@ export default function Landing() {
     { icon: <Shield className="h-6 w-6" />, title: "Connect Wallet" },
     { icon: <Lock className="h-6 w-6" />, title: "Verify Identity (ZK)" },
     { icon: <Vault className="h-6 w-6" />, title: "Deposit to Vaults" },
-    { icon: <TrendingUp className="h-6 w-6" />, title: "Earn Optimized Yields" },
+    {
+      icon: <TrendingUp className="h-6 w-6" />,
+      title: "Earn Optimized Yields",
+    },
   ];
 
   const stats = [
@@ -55,7 +73,10 @@ export default function Landing() {
         <div className="absolute inset-0 bg-gradient-to-b from-primary/10 via-transparent to-transparent" />
         <div className="absolute inset-0">
           <div className="absolute top-20 left-10 w-72 h-72 bg-primary/20 rounded-full blur-3xl animate-float" />
-          <div className="absolute bottom-40 right-20 w-96 h-96 bg-accent/20 rounded-full blur-3xl animate-float" style={{ animationDelay: "1s" }} />
+          <div
+            className="absolute bottom-40 right-20 w-96 h-96 bg-accent/20 rounded-full blur-3xl animate-float"
+            style={{ animationDelay: "1s" }}
+          />
         </div>
 
         <div className="container relative mx-auto px-4 pt-20 pb-32">
@@ -79,16 +100,62 @@ export default function Landing() {
             </h1>
 
             <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-              Privacy-First AI Yield Aggregator on Polygon. Your Yield. Your Privacy. Your Sovereignty.
+              Privacy-First AI Yield Aggregator on Polygon. Your Yield. Your
+              Privacy. Your Sovereignty.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-              <GradientButton size="lg" onClick={() => navigate("/app")}>
-                Launch App
-              </GradientButton>
-              <OutlineButton size="lg">
-                Read Docs
-              </OutlineButton>
+              {isConnected ? (
+                <GradientButton size="lg" onClick={() => navigate("/app")}>
+                  <Wallet className="h-5 w-5 mr-2" />
+                  Launch App
+                </GradientButton>
+              ) : (
+                <ConnectButton.Custom>
+                  {({ account, chain, openConnectModal, mounted }) => {
+                    const ready = mounted;
+                    const connected = ready && account && chain;
+
+                    return (
+                      <div
+                        {...(!ready && {
+                          "aria-hidden": true,
+                          style: {
+                            opacity: 0,
+                            pointerEvents: "none",
+                            userSelect: "none",
+                          },
+                        })}
+                      >
+                        {(() => {
+                          if (!connected) {
+                            return (
+                              <GradientButton
+                                size="lg"
+                                onClick={openConnectModal}
+                              >
+                                <Wallet className="h-5 w-5 mr-2" />
+                                Connect Wallet
+                              </GradientButton>
+                            );
+                          }
+
+                          return (
+                            <GradientButton
+                              size="lg"
+                              onClick={() => navigate("/app")}
+                            >
+                              <Wallet className="h-5 w-5 mr-2" />
+                              Launch App
+                            </GradientButton>
+                          );
+                        })()}
+                      </div>
+                    );
+                  }}
+                </ConnectButton.Custom>
+              )}
+              <OutlineButton size="lg">Read Docs</OutlineButton>
             </div>
 
             {/* Live Stats */}
@@ -104,7 +171,9 @@ export default function Landing() {
                     <p className="text-2xl md:text-3xl font-bold text-primary mb-1">
                       {stat.value}
                     </p>
-                    <p className="text-sm text-muted-foreground">{stat.label}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {stat.label}
+                    </p>
                   </GlassCard>
                 </motion.div>
               ))}
@@ -211,7 +280,9 @@ export default function Landing() {
                 <div className="inline-flex items-center justify-center w-16 h-16 rounded-xl bg-primary/10 text-primary mb-2">
                   <protocol.icon className="h-8 w-8" />
                 </div>
-                <p className="text-sm text-muted-foreground font-medium">{protocol.name}</p>
+                <p className="text-sm text-muted-foreground font-medium">
+                  {protocol.name}
+                </p>
               </motion.div>
             ))}
           </div>
@@ -257,14 +328,50 @@ export default function Landing() {
             className="text-center"
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              <span className="gradient-text">Ready to Earn Private Yields?</span>
+              <span className="gradient-text">
+                Ready to Earn Private Yields?
+              </span>
             </h2>
             <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Join thousands of users earning optimized yields with complete privacy
+              Connect your wallet to access privacy-first DeFi vaults, stealth
+              payments, and AI-powered recommendations.
             </p>
-            <GradientButton size="lg" onClick={() => navigate("/app")} className="glow-purple">
-              Launch App Now
-            </GradientButton>
+            {isConnected ? (
+              <GradientButton
+                size="lg"
+                onClick={() => navigate("/app")}
+                className="glow-purple"
+              >
+                <Wallet className="h-5 w-5 mr-2" />
+                Launch App Now
+              </GradientButton>
+            ) : (
+              <ConnectButton.Custom>
+                {({ openConnectModal, mounted }) => {
+                  return (
+                    <div
+                      {...(!mounted && {
+                        "aria-hidden": true,
+                        style: {
+                          opacity: 0,
+                          pointerEvents: "none",
+                          userSelect: "none",
+                        },
+                      })}
+                    >
+                      <GradientButton
+                        size="lg"
+                        onClick={openConnectModal}
+                        className="glow-purple"
+                      >
+                        <Wallet className="h-5 w-5 mr-2" />
+                        Connect Wallet
+                      </GradientButton>
+                    </div>
+                  );
+                }}
+              </ConnectButton.Custom>
+            )}
           </motion.div>
         </div>
       </section>

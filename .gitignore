@@ -1,0 +1,159 @@
+# ============================================
+# NEXUS Protocol - Git Ignore
+# ============================================
+
+# ============ Dependencies ============
+node_modules/
+.pnp
+.pnp.js
+.yarn/
+
+# ============ Build Outputs ============
+dist/
+dist-ssr/
+build/
+out/
+.next/
+.nuxt/
+.output/
+
+# ============ Smart Contract - Foundry ============
+contracts/cache/
+contracts/artifacts/
+contracts/typechain-types/
+contracts/lib/
+contracts/out/
+contracts/broadcast/
+contracts/forge-std/
+contracts/node_modules/
+
+# Foundry cache and output
+cache/
+out/
+broadcast/
+
+# ============ Smart Contract - Hardhat ============
+artifacts/
+typechain/
+typechain-types/
+
+# ============ Environment Variables & Secrets ============
+.env
+.env.*
+!.env.example
+!.env.sample
+!contracts/.env.example
+contracts/.env
+*.env
+
+# Private keys and secrets
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+secrets/
+.secrets
+private-keys/
+keystore/
+
+# Wallet files
+*.json.enc
+wallet.json
+
+# ============ IDE & Editors ============
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/launch.json
+.idea/
+*.swp
+*.swo
+*.sublime-workspace
+*.sublime-project
+.project
+.classpath
+.settings/
+*.code-workspace
+
+# ============ OS Files ============
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# ============ Logs ============
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+hardhat.log
+
+# ============ Testing & Coverage ============
+coverage/
+coverage.json
+.nyc_output/
+*.lcov
+lcov.info
+gas-report.txt
+
+# ============ TypeScript ============
+*.tsbuildinfo
+tsconfig.tsbuildinfo
+
+# ============ Deployment & CI/CD ============
+.vercel
+.turbo
+.netlify
+.serverless
+
+# ============ Temporary Files ============
+*.tmp
+*.temp
+*.bak
+*.backup
+*~
+.cache/
+tmp/
+temp/
+
+# ============ Debug Files ============
+*.map
+.debug/
+
+# ============ Package Lock Files ============
+# Keep lock files for reproducible builds
+# Uncomment below if you want to ignore them
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+# bun.lockb
+
+# ============ Project Specific ============
+plan.md
+notes.md
+todo.md
+scratch/
+drafts/
+
+# ============ Slither & Security Tools ============
+slither-report/
+crytic-export/
+mythril/
+echidna/
+
+# ============ Gas Reports ============
+gas-report.txt
+gas-snapshot
+
+# ============ ABI Exports (keep in version control if needed) ============
+# abi/
+# abis/

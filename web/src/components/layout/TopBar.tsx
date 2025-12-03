@@ -1,40 +1,32 @@
 import { GradientButton } from "@/components/ui/gradient-button";
 import { useAppStore } from "@/stores/useAppStore";
-import { Menu, Wallet, ChevronDown } from "lucide-react";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { motion } from "framer-motion";
-import { useAccount, useConnect, useDisconnect } from 'wagmi';
-import { useEffect } from 'react';
+import { Menu, Wallet } from "lucide-react";
+import { useEffect } from "react";
+import { useAccount } from "wagmi";
 
 export const TopBar = () => {
   const { toggleSidebar } = useAppStore();
   const { address, isConnected } = useAccount();
-  const { connect, connectors } = useConnect();
-  const { disconnect } = useDisconnect();
 
   // Sync wagmi state with app store
   useEffect(() => {
     if (isConnected && address) {
-      useAppStore.setState({ 
-        walletConnected: true, 
-        walletAddress: `${address.slice(0, 6)}...${address.slice(-4)}` 
+      useAppStore.setState({
+        walletConnected: true,
+        walletAddress: `${address.slice(0, 6)}...${address.slice(-4)}`,
       });
     } else {
-      useAppStore.setState({ 
-        walletConnected: false, 
-        walletAddress: null 
+      useAppStore.setState({
+        walletConnected: false,
+        walletAddress: null,
       });
     }
   }, [isConnected, address]);
 
-  const handleConnect = () => {
-    const injectedConnector = connectors.find(c => c.id === 'injected');
-    if (injectedConnector) {
-      connect({ connector: injectedConnector });
-    }
-  };
-
   return (
-    <motion.header 
+    <motion.header
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       className="sticky top-0 z-40 w-full border-b border-border/50 glass"
@@ -51,36 +43,62 @@ export const TopBar = () => {
             <div className="w-8 h-8 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center">
               <span className="text-lg font-bold">N</span>
             </div>
-            <span className="font-bold text-lg hidden md:block gradient-text">NEXUS</span>
+            <span className="font-bold text-lg hidden md:block gradient-text">
+              NEXUS
+            </span>
           </div>
         </div>
-        
+
         <div className="flex items-center gap-4">
-          {isConnected && address ? (
-            <div className="relative group">
-              <button className="flex items-center gap-2 glass px-4 py-2 rounded-lg hover:border-primary/30 transition-colors">
-                <div className="w-2 h-2 bg-success rounded-full animate-pulse" />
-                <span className="text-sm font-medium hidden md:block">
-                  {`${address.slice(0, 6)}...${address.slice(-4)}`}
-                </span>
-                <Wallet className="h-4 w-4" />
-                <ChevronDown className="h-3 w-3" />
-              </button>
-              <div className="absolute right-0 mt-2 w-48 glass rounded-lg p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
-                <button 
-                  onClick={() => disconnect()}
-                  className="w-full text-left px-3 py-2 text-sm hover:bg-secondary rounded-lg transition-colors"
+          <ConnectButton.Custom>
+            {({
+              account,
+              chain,
+              openConnectModal,
+              openAccountModal,
+              mounted,
+            }) => {
+              const ready = mounted;
+              const connected = ready && account && chain;
+
+              return (
+                <div
+                  {...(!ready && {
+                    "aria-hidden": true,
+                    style: {
+                      opacity: 0,
+                      pointerEvents: "none",
+                      userSelect: "none",
+                    },
+                  })}
                 >
-                  Disconnect
-                </button>
-              </div>
-            </div>
-          ) : (
-            <GradientButton size="sm" onClick={handleConnect}>
-              <Wallet className="h-4 w-4 mr-2" />
-              Connect Wallet
-            </GradientButton>
-          )}
+                  {(() => {
+                    if (!connected) {
+                      return (
+                        <GradientButton size="sm" onClick={openConnectModal}>
+                          <Wallet className="h-4 w-4 mr-2" />
+                          Connect Wallet
+                        </GradientButton>
+                      );
+                    }
+
+                    return (
+                      <button
+                        onClick={openAccountModal}
+                        className="flex items-center gap-2 glass px-4 py-2 rounded-lg hover:border-primary/30 transition-colors"
+                      >
+                        <div className="w-2 h-2 bg-success rounded-full animate-pulse" />
+                        <span className="text-sm font-medium hidden md:block">
+                          {account.displayName}
+                        </span>
+                        <Wallet className="h-4 w-4" />
+                      </button>
+                    );
+                  })()}
+                </div>
+              );
+            }}
+          </ConnectButton.Custom>
         </div>
       </div>
     </motion.header>
