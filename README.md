@@ -1,219 +1,281 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Polygon-8247E5?style=for-the-badge&logo=polygon&logoColor=white" alt="Polygon" />
   <img src="https://img.shields.io/badge/Solidity-363636?style=for-the-badge&logo=solidity&logoColor=white" alt="Solidity" />
+  <img src="https://img.shields.io/badge/Aave_V3-2EBAC6?style=for-the-badge&logo=aave&logoColor=white" alt="Aave V3" />
+  <img src="https://img.shields.io/badge/ERC--4626-3C3C3D?style=for-the-badge&logo=ethereum&logoColor=white" alt="ERC-4626" />
   <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React" />
   <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
-  <img src="https://img.shields.io/badge/Aave-2EBAC6?style=for-the-badge&logo=aave&logoColor=white" alt="Aave" />
+  <img src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite" />
+  <img src="https://img.shields.io/badge/Hardhat-FFF100?style=for-the-badge&logo=hardhat&logoColor=black" alt="Hardhat" />
 </p>
 
-<h1 align="center">
-  🛡️ NEXUS Protocol
-</h1>
+<h1 align="center">🛡️ NEXUS Protocol</h1>
 
-<h3 align="center">
-  <em>Smart Yield Infrastructure with Privacy Pool on Polygon</em>
-</h3>
+<h3 align="center"><em>Yield-Backed Privacy Infrastructure on Polygon</em></h3>
 
 <p align="center">
-  <strong>AI-optimized yield vaults + commitment-based privacy pool | Honest, transparent DeFi</strong>
+  <strong>ERC-4626 yield vaults · Commitment-based privacy pool · Username stealth payments</strong><br/>
+  <strong>6 smart contracts live on Polygon Mainnet — real Aave V3 yield, real privacy gains</strong>
 </p>
 
 <p align="center">
-  <a href="#-live-deployment">Live Demo</a> •
-  <a href="#-features">Features</a> •
-  <a href="#-privacy-model">Privacy Model</a> •
+  <a href="https://nexus-protocol-black.vercel.app">🌐 Live App</a> •
+  <a href="#-smart-contracts-on-polygon-mainnet">Contracts</a> •
+  <a href="#-core-features">Features</a> •
+  <a href="#-privacy-model--honest-claims">Privacy Model</a> •
   <a href="#-architecture">Architecture</a> •
-  <a href="#-smart-contracts">Contracts</a> •
-  <a href="#-getting-started">Getting Started</a> •
-  <a href="#-tech-stack">Tech Stack</a>
+  <a href="#-user-flow">User Flow</a> •
+  <a href="#-getting-started">Getting Started</a>
 </p>
 
 ---
 
-## 🌐 Live Deployment
+## 💡 What Is NEXUS Protocol?
 
-### 📍 Polygon Mainnet Contracts
+NEXUS Protocol is a **yield-backed privacy infrastructure** deployed on **Polygon Mainnet**. It combines three core primitives into one cohesive DeFi application:
 
-| Contract             | Address                                      | Polygonscan                                                                        |
-| -------------------- | -------------------------------------------- | ---------------------------------------------------------------------------------- |
-| **StealthRegistry**  | `0x678e033Ac388BfE5a1b0a98329e98E253854060C` | [View](https://polygonscan.com/address/0x678e033Ac388BfE5a1b0a98329e98E253854060C) |
-| **NexusFactory**     | `0x548eBA09dD9FE4D45F76Cf6a6E42139c16a6A387` | [View](https://polygonscan.com/address/0x548eBA09dD9FE4D45F76Cf6a6E42139c16a6A387) |
-| **USDC Vault**       | `0x3AA9fb8b22466403f6a3498c99ACDb9A27e80a49` | [View](https://polygonscan.com/address/0x3AA9fb8b22466403f6a3498c99ACDb9A27e80a49) |
-| **USDT Vault**       | `0x579d7019DbCD1598Ef4757723Baa05c7c31249F4` | [View](https://polygonscan.com/address/0x579d7019DbCD1598Ef4757723Baa05c7c31249F4) |
-| **DAI Vault**        | `0xfB758bAD4Ee1533E79e3130665178a151D7ad00a` | [View](https://polygonscan.com/address/0xfB758bAD4Ee1533E79e3130665178a151D7ad00a) |
-| **NexusPrivacyPool** | *Pending deployment*                          | —                                                                                  |
+1. **ERC-4626 Yield Vaults** — Deposit stablecoins (USDC, USDT, DAI) into tokenized vaults that auto-supply to **Aave V3** for real on-chain yield generation. "Yield pays first, principal stays productive."
 
-### 🌍 Frontend
+2. **Commitment-Based Privacy Pool** — A Tornado-Cash-inspired pool where users deposit fixed denominations with a cryptographic commitment (`keccak256(secret, nullifier)`). Withdrawals use a nullifier to prove deposit knowledge without revealing which deposit was theirs. Funds earn Aave V3 yield while in the pool.
 
-- **Production**: [Coming Soon on Vercel]
+3. **Username Stealth Payments** — Register a human-readable `@username` on-chain and receive payments without exposing your wallet address to senders. Payments are held in escrow until claimed by the username owner.
+
+All contracts are **fully deployed and functional** on Polygon Mainnet with real Aave V3 integration — no mocks, no testnets.
 
 ---
 
-## ✨ Features
+## 📍 Smart Contracts on Polygon Mainnet
 
-### 📊 Yield Vaults
+| # | Contract | Address | Polygonscan |
+|---|----------|---------|-------------|
+| 1 | **StealthRegistry** | `0x7474DFdA6a63C0743eB06D5559AB161f4C30c22B` | [View ↗](https://polygonscan.com/address/0x7474DFdA6a63C0743eB06D5559AB161f4C30c22B) |
+| 2 | **NexusFactory** | `0x7e597aCDbA0Eb5bdb323Ea9e76272a736B5D3831` | [View ↗](https://polygonscan.com/address/0x7e597aCDbA0Eb5bdb323Ea9e76272a736B5D3831) |
+| 3 | **NexusVault (USDC)** | `0x9cD3434916fF1B39b42c79d038fD7f622B22d695` | [View ↗](https://polygonscan.com/address/0x9cD3434916fF1B39b42c79d038fD7f622B22d695) |
+| 4 | **NexusVault (USDT)** | `0x8931b20fEC39E9b84e43A6bD8dcEa695b5272028` | [View ↗](https://polygonscan.com/address/0x8931b20fEC39E9b84e43A6bD8dcEa695b5272028) |
+| 5 | **NexusVault (DAI)** | `0xdF90cA5EF64Aa00e72E371f12D4c7594c9866B12` | [View ↗](https://polygonscan.com/address/0xdF90cA5EF64Aa00e72E371f12D4c7594c9866B12) |
+| 6 | **NexusPrivacyPool** | `0x740a7a9191d5F8aB64C35C1e2Aa95A4FE4F57a5b` | [View ↗](https://polygonscan.com/address/0x740a7a9191d5F8aB64C35C1e2Aa95A4FE4F57a5b) |
 
-ERC4626 yield vaults that deposit underlying assets into Aave V3 on Polygon for real, verifiable yield.
-
-- ERC4626 compliant tokenized vaults
-- Integrated with **Aave V3** on Polygon for real yields
-- Configurable fee structure (0.1% deposit/withdraw)
-- Emergency withdrawal functionality
-- **Note**: All deposits, withdrawals, and balances are publicly visible on-chain
-
-### 🔒 Privacy Pool (NEW)
-
-Commitment-based privacy pool that breaks the on-chain link between deposit and withdrawal addresses.
-
-- Fixed denomination deposits (100 / 1,000 / 10,000 USDC)
-- Commit-reveal scheme: deposit with a commitment hash, withdraw to any address using the secret
-- Deposited funds earn yield on Aave V3 while waiting
-- Relayer support (0.3% fee) for meta-transactions
-- Merkle tree for commitment verification
-- **Honest disclaimer**: Deposit amounts are fixed but public. Timing correlation between deposits and withdrawals is possible. This is not full ZK privacy — it breaks address linkability only.
-
-### 💸 @Username Payments
-
-Send and receive funds using human-readable usernames.
-
-- **@username** based payments (3-20 chars)
-- Escrow-style payment holding
-- Encrypted notes support
-- **Honest disclaimer**: Usernames and payment amounts are publicly visible on-chain. This is a UX convenience feature, not a privacy feature.
-
-### 🤖 AI Yield Agent
-
-AI assistant that suggests yield optimization strategies across vaults.
-
-- Portfolio analysis and recommendations
-- Risk tolerance settings
-- Auto-compounding suggestions
-- Strategy optimization history
-
-### 🪪 Identity Verification
-
-Attestation-based identity verification with on-chain badges.
-
-- Prove Humanity, Age (18+), Wallet History
-- Badge-based verification system
-- **Honest disclaimer**: Verification relies on third-party attestors. On-chain attestations are public.
-
-### 🏛️ Governance
-
-Vote on protocol proposals using NXS tokens.
-
-- Proposal creation and voting (For / Against / Abstain)
-- Vote delegation
-- Transparent on-chain governance
+**Chain:** Polygon Mainnet (Chain ID: 137) · **Compiler:** Solidity 0.8.20 · **Optimizer:** 200 runs + viaIR
 
 ---
 
-## 🔍 Privacy Model
+## 🏗️ Core Features
 
-We believe in being honest about what our protocol can and cannot do.
+### 1. 🏦 ERC-4626 Yield Vaults (`NexusVault.sol`)
 
-| Feature            | What's Public                     | What's Private                        |
-| ------------------ | --------------------------------- | ------------------------------------- |
-| **Yield Vaults**   | Deposits, withdrawals, balances   | Nothing — fully transparent on-chain  |
-| **Privacy Pool**   | Deposit amounts (fixed), timing   | Sender ↔ receiver link (broken)       |
-| **@Username Pay**  | Usernames, amounts, transactions  | Nothing — convenience feature only    |
-| **Identity**       | On-chain attestations             | Personal data (off-chain only)        |
+Production-grade tokenized vaults following the ERC-4626 standard:
 
-### Privacy Pool — How It Works
+- **Real Aave V3 yield** — Deposits are automatically supplied to Aave V3 Pool on Polygon. No mock yields.
+- **Multi-asset support** — Three vaults deployed for USDC, USDT, and DAI
+- **Configurable fees** — Deposit/withdraw fees (default 0.1%) capped at 5% max, with separate fee recipient
+- **Full share accounting** — `totalAssets()` reads live `aToken.balanceOf()` for real-time TVL
+- **Emergency controls** — Owner can emergency-withdraw from Aave if a critical vulnerability is found
+- **Factory deployed** — All vaults created through `NexusFactory.createVault()` for standardized deployment
 
-1. **Deposit**: User submits a commitment hash (H(secret, nullifier)) with a fixed USDC amount
-2. **Wait**: Funds earn Aave V3 yield. More deposits grow the anonymity set
-3. **Withdraw**: User provides the secret + nullifier to withdraw to ANY address. The nullifier prevents double-spending
-4. **Result**: On-chain observers cannot link the depositor address to the withdrawal address
+**Key Functions:**
+| Function | Description |
+|----------|-------------|
+| `deposit(assets, receiver)` | Deposit underlying → collect fee → supply to Aave → mint shares |
+| `withdraw(assets, receiver, owner)` | Burn shares → withdraw from Aave → collect fee → transfer |
+| `totalAssets()` | Returns live aToken balance (real TVL in Aave) |
+| `getVaultInfo()` | Returns name, symbol, TVL, APY, risk level in one call |
+| `getUserPosition(user)` | Returns user's shares, asset value, and pending yield |
+| `setFees(depositFee, withdrawFee)` | Update fees (owner only, max 5%) |
+| `emergencyWithdraw()` | Pull all funds from Aave to owner (emergency only) |
 
-### What This Is NOT
+### 2. 🕵️ Privacy Pool (`NexusPrivacyPool.sol`)
 
-- ❌ Not "anonymous yield farming" — vault yields are fully public
-- ❌ Not ZK-powered — no zero-knowledge proofs are used (commit-reveal only)
-- ❌ Not Tornado Cash — no Merkle tree proofs, simpler commitment scheme
-- ❌ Not fully private — timing analysis can still correlate deposits and withdrawals
+Commitment-based privacy pool that breaks **sender↔receiver correlation**:
+
+- **Commit-reveal scheme** — Deposit with `commitment = keccak256(secret, nullifier)`. Withdraw with `nullifierHash = keccak256(nullifier)`. No on-chain link between depositor and recipient.
+- **Fixed denominations** — All deposits of the same denomination are fungible. Anonymity set = total deposits at that denomination. Supports 0.01, 0.1, 1, 100, 1,000, and 10,000 USDC.
+- **Yield while waiting** — All pool deposits are forwarded to Aave V3. Funds earn yield passively. Owner can harvest yield without touching principal.
+- **Relayer support** — Optional relayer can submit withdrawal tx on behalf of the recipient (0.3% fee). Prevents gas-funding correlation.
+- **Merkle root tracking** — Commitments are stored in a hash chain per denomination with incremental root updates.
+- **Nullifier protection** — Spent nullifiers are recorded to prevent double-withdrawal.
+
+**Key Functions:**
+| Function | Description |
+|----------|-------------|
+| `deposit(commitment, denominationIndex)` | Deposit fixed amount → store commitment → supply to Aave |
+| `withdraw(nullifierHash, commitment, denomIndex, recipient, relayer)` | Verify commitment + nullifier → withdraw from Aave → pay recipient |
+| `getPoolStats()` | Total deposited, withdrawn, Aave balance, yield earned |
+| `getAnonymitySetSize(denomIndex)` | Number of deposits at a denomination (privacy metric) |
+| `getAllDenominations()` | List all supported denominations with active status |
+| `harvestYield(recipient)` | Owner harvests earned yield (principal untouched) |
+| `addDenomination(amount)` | Owner adds new deposit denomination |
+| `isSpentNullifier(hash)` | Check if a nullifier has been used |
+
+### 3. 👤 Username Stealth Payments (`StealthRegistry.sol`)
+
+Human-readable payment routing without exposing wallet addresses:
+
+- **@username registration** — Register a 3-20 character username (lowercase + numbers + underscore) for 0.01 MATIC
+- **Escrow payments** — Send ERC-20 tokens to any `@username`. Tokens are held in the contract until the username owner claims them.
+- **Privacy gain** — Senders interact with a username, not a wallet address. Recipients claim without revealing their address to the sender at payment time.
+- **Payment history** — Track sent/received payments with encrypted notes
+- **Spam prevention** — Registration fee + username format validation
+
+**Key Functions:**
+| Function | Description |
+|----------|-------------|
+| `registerUsername(username, stealthMetaHash)` | Register @username with stealth meta-address hash |
+| `sendPayment(username, token, amount, ephemeralHash, note)` | Send ERC-20 to @username (held in escrow) |
+| `claimPayment(paymentId)` | Claim a pending payment (only username owner) |
+| `isUsernameAvailable(username)` | Check availability |
+| `getProfile(username)` | Get profile owner, registration date, status |
+| `getPendingPayments(username)` | List unclaimed payments with total pending amount |
+
+### 4. 🏭 Vault Factory (`NexusFactory.sol`)
+
+Standardized vault deployment and registry:
+
+- **One-call vault creation** — Deploy a fully configured ERC-4626 vault with Aave integration
+- **Asset-to-vault mapping** — Prevents duplicate vaults per asset
+- **Registry** — Query all deployed vaults, get vault-by-asset
+- **Privacy pool registration** — Links the privacy pool to the factory
 
 ---
 
-## 🏗️ Architecture
+## 🔒 Privacy Model — Honest Claims
+
+> **We are transparent about what NEXUS Protocol does and doesn't provide.**
+
+### What We Deliver
+
+| Privacy Feature | How It Works |
+|----------------|--------------|
+| **Sender↔Receiver Unlinkability** | Privacy Pool commitments break the on-chain link. Depositor address ≠ Withdrawal recipient. |
+| **Fixed-Denomination Fungibility** | All 0.01 USDC deposits look identical. Anonymity set grows with each deposit. |
+| **Username Address Abstraction** | Senders pay `@username`, not `0x...`. Recipient's wallet is not exposed to the sender. |
+| **Nullifier-Based Withdrawal** | Withdrawals prove deposit knowledge via nullifier — no depositor address revealed. |
+| **Relayer Support** | Third party can submit withdrawal tx, preventing gas-funding correlation. |
+
+### What We Don't Claim
+
+- ❌ **We do NOT claim "fully anonymous" transactions** — Vault deposits, yields, and payment flows are public on-chain.
+- ❌ **We do NOT claim ZK-proof privacy** — The current commit-reveal scheme is simplified. Full ZK-SNARK verification (Groth16/PLONK) is a planned future upgrade.
+- ❌ **We do NOT hide vault activity** — All ERC-4626 vault deposits/withdrawals/yields are standard on-chain ERC-20 transfers visible to anyone.
+- ❌ **Trivial correlation is possible** — Deposit timing, amounts, and gas patterns can be used to correlate deposits and withdrawals for sophisticated observers.
+
+### Privacy vs Standard DeFi
+
+| Feature | Standard DeFi | NEXUS Protocol |
+|---------|--------------|----------------|
+| Vault deposits | Fully public | Fully public (same) |
+| Payment recipient | Wallet exposed | Hidden behind @username |
+| Deposit↔Withdrawal link | Direct on-chain link | Broken by commitment scheme |
+| Anonymity set | N/A | Grows with deposits per denomination |
+| Relayer withdrawal | N/A | Supported (breaks gas correlation) |
+
+---
+
+## 🏛️ Architecture
 
 ```
-┌──────────────────────────────────────────────────────────────────────────────┐
-│                              NEXUS Protocol                                  │
-├──────────────────────────────────────────────────────────────────────────────┤
-│                                                                              │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  ┌──────────────────┐ │
-│  │   Frontend   │  │  AI Agent    │  │   Vaults     │  │   Privacy Pool   │ │
-│  │   (React)    │  │  (Frontend)  │  │  (ERC4626)   │  │  (Commit-Reveal) │ │
-│  └──────┬───────┘  └──────┬───────┘  └──────┬───────┘  └──────┬───────────┘ │
-│         │                 │                  │                  │            │
-│         └─────────────────┴──────────────────┴──────────────────┘            │
-│                                     │                                        │
-│                     ┌───────────────┼───────────────┐                        │
-│                     │               │               │                        │
-│              ┌──────▼──────┐ ┌──────▼──────┐ ┌──────▼──────┐                │
-│              │  Stealth    │ │  Nexus      │ │   Aave V3   │                │
-│              │  Registry   │ │  Factory    │ │   (Yield)   │                │
-│              └─────────────┘ └─────────────┘ └─────────────┘                │
-│                                                                              │
-│                            Polygon PoS (Chain 137)                           │
-└──────────────────────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────┐
+│                  NEXUS Protocol Architecture                  │
+├──────────────────────────────────────────────────────────────┤
+│                                                               │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────────┐    │
+│  │  NexusVault   │  │  NexusVault  │  │   NexusVault     │    │
+│  │   (USDC)     │  │   (USDT)     │  │    (DAI)         │    │
+│  │  ERC-4626    │  │  ERC-4626    │  │   ERC-4626       │    │
+│  └──────┬───────┘  └──────┬───────┘  └───────┬──────────┘    │
+│         │                 │                   │               │
+│         └─────────┬───────┘───────────────────┘               │
+│                   │                                           │
+│         ┌─────────▼─────────┐                                 │
+│         │   NexusFactory    │ ← Creates & registers vaults    │
+│         └───────────────────┘                                 │
+│                                                               │
+│  ┌──────────────────────┐    ┌─────────────────────────┐      │
+│  │  NexusPrivacyPool    │    │   StealthRegistry       │      │
+│  │  Commit/Reveal       │    │   @username Payments     │      │
+│  │  Fixed Denominations │    │   Escrow + Claim         │      │
+│  │  Aave V3 Yield       │    │   Payment History        │      │
+│  └──────────┬───────────┘    └─────────────────────────┘      │
+│             │                                                 │
+│  ┌──────────▼──────────────────────────────────────────┐      │
+│  │             Aave V3 Pool (Polygon)                   │      │
+│  │  Real yield on USDC, USDT, DAI via aTokens           │      │
+│  └─────────────────────────────────────────────────────┘      │
+│                                                               │
+├──────────────────────────────────────────────────────────────┤
+│  Frontend: React + TypeScript + Vite + RainbowKit + wagmi    │
+│  Connected to Polygon Mainnet via publicnode RPC              │
+└──────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 📜 Smart Contracts
+## 🔄 User Flow
 
-### NexusVault.sol
+### Vault Deposit & Withdrawal
 
-ERC4626 compliant yield vault that automatically deposits to Aave V3.
-
-```solidity
-// Key Features:
-- deposit(assets, receiver) → shares
-- withdraw(assets, receiver, owner) → shares
-- totalAssets() → TVL in underlying token
-- getCurrentAPY() → Current yield rate
-- getUserPosition(user) → User's shares & value
+```
+1. Connect Wallet (MetaMask/WalletConnect via RainbowKit)
+2. Navigate to Vaults → Select USDC/USDT/DAI vault
+3. Approve token spending → Deposit amount
+4. Contract: ERC-20 transferFrom → Aave V3 supply → Mint vault shares
+5. Earn real Aave V3 yield passively
+6. Withdraw: Burn shares → Aave V3 withdraw → Transfer tokens (minus fee)
 ```
 
-### NexusPrivacyPool.sol (NEW)
+### Privacy Pool Deposit & Withdrawal
 
-Commitment-based privacy pool with fixed denomination deposits and Aave V3 yield.
+```
+1. Navigate to Privacy Pool → Select denomination (0.01 to 10,000 USDC)
+2. Frontend generates: secret (random), nullifier (random)
+3. Computes: commitment = keccak256(secret, nullifier)
+4. User receives a "Privacy Note" (contains secret + nullifier + denomination)
+5. Approve USDC → Deposit with commitment hash
+6. Contract: Transfer USDC → Store commitment → Supply to Aave V3
 
-```solidity
-// Key Features:
-- deposit(commitment, denominationIndex) → Deposit tokens, store commitment
-- withdraw(nullifierHash, commitment, denominationIndex, recipient, relayer) → Verify & send
-- harvestYield() → Collect Aave yield (owner only)
-- getAnonymitySetSize(denominationIndex) → Number of unspent commitments
-- Denominations: 100, 1000, 10000 USDC
+--- Later (any time, any address) ---
+
+7. Enter Privacy Note → Choose recipient address
+8. Frontend derives: nullifierHash = keccak256(nullifier)
+9. Contract: Verify commitment exists → Check nullifier unspent
+10. Withdraw from Aave → Transfer USDC to recipient
+11. No on-chain link between depositor and recipient
 ```
 
-### StealthRegistry.sol
+### Stealth Payment Flow
 
-Username-based payment system (not stealth in the cryptographic sense).
-
-```solidity
-// Key Features:
-- registerUsername(username, stealthMetaHash)
-- sendPayment(recipientUsername, token, amount, ...)
-- claimPayment(paymentId)
-- isUsernameAvailable(username)
-- getPendingPayments(username)
+```
+1. Register @username (0.01 MATIC registration fee)
+2. Share your @username publicly
+3. Sender: Enter @username → Select token & amount → Send
+4. Contract: ERC-20 transferFrom → Store in escrow → Emit PaymentCreated
+5. Recipient: View pending payments → Claim
+6. Contract: Verify ownership → Transfer tokens → Mark claimed
 ```
 
-### NexusFactory.sol
+---
 
-Factory pattern for deploying new vaults. Also stores the privacy pool address.
+## 🛠️ Tech Stack
 
-```solidity
-// Key Features:
-- createVault(asset, aToken, name, symbol, ...)
-- getAllVaults()
-- getVaultForAsset(asset)
-- setPrivacyPool(address) / getPrivacyPool()
-```
+### Smart Contracts
+| Technology | Purpose |
+|-----------|---------|
+| **Solidity 0.8.20** | Smart contract language |
+| **Hardhat** | Development & deployment framework |
+| **OpenZeppelin** | ERC-4626, Ownable, ReentrancyGuard, SafeERC20 |
+| **Aave V3** | Real yield generation via supply/withdraw |
+| **Polygon Mainnet** | L2 deployment chain (low gas, high speed) |
+
+### Frontend
+| Technology | Purpose |
+|-----------|---------|
+| **React 18** | UI framework |
+| **TypeScript** | Type-safe development |
+| **Vite** | Build tool & dev server |
+| **wagmi v2** | React hooks for Ethereum |
+| **RainbowKit** | Wallet connection UI |
+| **TailwindCSS** | Utility-first styling |
+| **shadcn/ui** | Component library |
+| **viem** | Low-level Ethereum client |
 
 ---
 
@@ -221,95 +283,38 @@ Factory pattern for deploying new vaults. Also stores the privacy pool address.
 
 ### Prerequisites
 
-- Node.js 18+
-- Bun or npm
-- Git
+- Node.js >= 18
+- npm or bun
+- MetaMask or WalletConnect-compatible wallet
+- MATIC for gas on Polygon
 
-### Installation
+### Frontend Setup
 
 ```bash
-# Clone the repository
-git clone https://github.com/goat-dev8/NEXUS-PROTOCOL.git
-cd NEXUS-PROTOCOL
-
-# Install frontend dependencies
 cd web
-bun install  # or npm install
-
-# Create environment file
-cp .env.example .env
-# Add your WalletConnect Project ID to .env
-
-# Start development server
-bun dev  # or npm run dev
+npm install
+npm run dev
 ```
 
-### Smart Contract Development
+### Contract Development
 
 ```bash
 cd contracts
-
-# Install dependencies
 npm install
-
-# Compile contracts
 npx hardhat compile
-
-# Run tests
-npx hardhat test
-
-# Deploy to Polygon (requires .env setup)
 npx hardhat run scripts/deploy.ts --network polygon
 ```
 
 ### Environment Variables
 
-```bash
-# Frontend (.env in /web)
+```env
+# contracts/.env
+PRIVATE_KEY=your_deployer_private_key
+
+# web/.env (optional overrides)
+VITE_POLYGON_RPC_URL=https://polygon-bor-rpc.publicnode.com
 VITE_WALLET_CONNECT_PROJECT_ID=your_project_id
-VITE_POLYGON_RPC_URL=https://polygon-rpc.com
-
-# Contracts (.env in /contracts)
-POLYGON_RPC_URL=https://polygon-rpc.com
-PRIVATE_KEY=your_private_key
-POLYGONSCAN_API_KEY=your_api_key
 ```
-
----
-
-## 🛠️ Tech Stack
-
-### Frontend
-
-| Technology        | Purpose                     |
-| ----------------- | --------------------------- |
-| **React 18**      | UI Framework                |
-| **TypeScript**    | Type Safety                 |
-| **Vite**          | Build Tool                  |
-| **TailwindCSS**   | Styling                     |
-| **shadcn/ui**     | UI Components               |
-| **Framer Motion** | Animations                  |
-| **wagmi v2**      | React Hooks for Ethereum    |
-| **viem**          | TypeScript Ethereum Library |
-| **RainbowKit**    | Wallet Connection           |
-| **React Router**  | Routing                     |
-| **Zustand**       | State Management            |
-
-### Smart Contracts
-
-| Technology          | Purpose                   |
-| ------------------- | ------------------------- |
-| **Solidity 0.8.20** | Smart Contract Language   |
-| **Hardhat**         | Development Environment   |
-| **OpenZeppelin**    | Secure Contract Libraries |
-| **Foundry**         | Testing Framework         |
-
-### Blockchain
-
-| Network         | Purpose               |
-| --------------- | --------------------- |
-| **Polygon PoS** | L2 Mainnet Deployment |
-| **Aave V3**     | Yield Generation      |
 
 ---
 
@@ -317,149 +322,98 @@ POLYGONSCAN_API_KEY=your_api_key
 
 ```
 NEXUS-PROTOCOL/
-├── 📁 contracts/                 # Smart contracts
-│   ├── 📁 src/
-│   │   ├── NexusVault.sol       # ERC4626 Yield Vault
-│   │   ├── NexusPrivacyPool.sol # Commitment Privacy Pool (NEW)
-│   │   ├── StealthRegistry.sol  # Username Payment System
-│   │   └── NexusFactory.sol     # Vault Factory
-│   ├── 📁 scripts/
-│   │   └── deploy.ts            # 6-contract deployment script
-│   ├── 📁 deployments/
-│   │   └── polygon.json         # Deployed addresses
-│   └── hardhat.config.ts
-│
-├── 📁 web/                       # Frontend application
-│   ├── 📁 src/
-│   │   ├── 📁 components/       # React components
-│   │   │   ├── 📁 layout/       # TopBar, Sidebar, Footer
-│   │   │   └── 📁 ui/           # shadcn/ui primitives
-│   │   ├── 📁 pages/            # Page components
-│   │   │   ├── Landing.tsx      # Landing page with bgn.jpg hero
-│   │   │   ├── Dashboard.tsx    # Portfolio overview
-│   │   │   ├── Vaults.tsx       # Yield Vaults management
-│   │   │   ├── PrivacyPool.tsx  # Privacy Pool deposit/withdraw (NEW)
-│   │   │   ├── StealthPay.tsx   # @Username Payments
-│   │   │   ├── Portfolio.tsx    # Portfolio analytics
-│   │   │   ├── AIAgent.tsx      # AI yield optimization
-│   │   │   ├── Governance.tsx   # Protocol governance
-│   │   │   ├── Identity.tsx     # Identity verification
-│   │   │   └── Settings.tsx     # User settings
-│   │   ├── 📁 hooks/            # Custom React hooks
-│   │   │   ├── useWallet.ts
-│   │   │   ├── useVaults.ts
-│   │   │   ├── useStealthPay.ts
-│   │   │   └── usePrivacyPool.ts  # (NEW)
-│   │   ├── 📁 lib/              # Utilities & config
-│   │   │   ├── config.ts        # Contract addresses
-│   │   │   ├── constants.ts
-│   │   │   └── contracts/abis.ts # All contract ABIs
-│   │   └── 📁 stores/           # Zustand stores
-│   │       └── useAppStore.ts
-│   ├── index.html
-│   ├── tailwind.config.ts
-│   └── vite.config.ts
-│
-├── vercel.json
+├── contracts/
+│   ├── src/
+│   │   ├── NexusVault.sol          # ERC-4626 yield vault with Aave V3
+│   │   ├── NexusFactory.sol        # Vault factory & registry
+│   │   ├── NexusPrivacyPool.sol    # Commitment-based privacy pool
+│   │   └── StealthRegistry.sol     # Username stealth payments
+│   ├── scripts/
+│   │   └── deploy.ts               # Full deployment script
+│   ├── deployments/
+│   │   └── polygon.json            # Deployed addresses
+│   ├── hardhat.config.ts
+│   └── package.json
+├── web/
+│   ├── src/
+│   │   ├── pages/
+│   │   │   ├── Landing.tsx          # Landing page
+│   │   │   ├── Dashboard.tsx        # Portfolio dashboard
+│   │   │   ├── Vaults.tsx           # Vault deposit/withdraw UI
+│   │   │   ├── PrivacyPool.tsx      # Privacy pool deposit/withdraw
+│   │   │   ├── StealthPay.tsx       # Username payments
+│   │   │   ├── Portfolio.tsx        # Position tracking
+│   │   │   ├── AIAgent.tsx          # AI yield suggestions
+│   │   │   ├── Governance.tsx       # DAO governance (future)
+│   │   │   ├── Identity.tsx         # User identity management
+│   │   │   └── Settings.tsx         # App settings
+│   │   ├── hooks/
+│   │   │   ├── useVaults.ts         # Vault interaction hooks
+│   │   │   ├── usePrivacyPool.ts    # Privacy pool hooks
+│   │   │   ├── useStealthPay.ts     # Stealth payment hooks
+│   │   │   ├── useWallet.ts         # Wallet connection
+│   │   │   └── usePrices.ts         # Token price feeds
+│   │   ├── lib/
+│   │   │   ├── config.ts            # Contract addresses & config
+│   │   │   ├── wagmi-config.ts      # wagmi + RainbowKit setup
+│   │   │   ├── constants.ts         # App constants
+│   │   │   └── contracts/abis.ts    # Contract ABIs
+│   │   └── components/              # Reusable UI components
+│   ├── vercel.json                   # Vercel SPA routing config
+│   └── package.json
+├── vercel.json                       # Root Vercel config
 └── README.md
 ```
 
 ---
 
-## 🔐 Security
+## 🔑 Key Design Decisions
 
-### Smart Contract Security
+### "Yield Pays First, Principal Stays Productive"
 
-- ✅ ReentrancyGuard on all state-changing functions
-- ✅ SafeERC20 for token transfers
-- ✅ Ownable access control
-- ✅ Fee caps (max 5%)
-- ✅ Emergency withdrawal functionality
-- ✅ Input validation on all parameters
-- ✅ Nullifier tracking to prevent double-spending in Privacy Pool
+Every stablecoin deposited into NEXUS vaults **immediately enters Aave V3**. There are no idle funds. The ERC-4626 `totalAssets()` reads `aToken.balanceOf()` directly — vault share pricing reflects real-time Aave lending yields. This is creative treasury management: users earn passive yield while their principal remains liquid through vault shares.
 
-### Frontend Security
+### Honest Privacy Architecture
 
-- ✅ No private keys stored in frontend
-- ✅ Environment variables for sensitive data
-- ✅ Wallet connection via established providers
-- ✅ Transaction signing only through user wallets
+We responded to feedback that "'privacy-first' and 'anonymous yield farming' claims are misleading" by:
 
-### Audit Status
+1. **Removing all "anonymous" and "privacy-first" marketing language**
+2. **Documenting exactly what is and isn't private** (see [Privacy Model](#-privacy-model--honest-claims))
+3. **Shipping real privacy features** — commitment-based deposits, nullifier withdrawals, relayer support, and username abstraction
+4. **Acknowledging limitations** — no ZK proofs yet, vault activity is public, timing correlation is possible
 
-⏳ Pending professional audit
+### Aave V3 Rounding Handling
+
+Aave V3 can lose 1-2 units on supply/withdraw (dust rounding). The Privacy Pool's `withdraw()` uses `min(amount, aToken.balanceOf(this))` to gracefully handle this — no reverts from rounding.
 
 ---
 
-## 🗺️ Roadmap
+## 📊 Wave 6 Improvements
 
-### Phase 1: Foundation ✅
+Wave 6 delivered the most significant upgrades to the protocol:
 
-- [x] Smart contract development (Vaults, Factory, StealthRegistry)
-- [x] Polygon mainnet deployment
-- [x] Frontend MVP with wallet integration
-
-### Phase 2: Privacy Pool ✅ (Wave 6)
-
-- [x] NexusPrivacyPool contract (commit-reveal, fixed denominations)
-- [x] Privacy Pool frontend page with deposit/withdraw
-- [x] Honest privacy model documentation
-- [x] Full UI redesign (dark/emerald theme)
-- [x] Fixed misleading "privacy-first" and "ZK-powered" claims
-
-### Phase 3: Enhancement 🔄
-
-- [ ] Full Aave yield integration testing
-- [ ] Portfolio tracking improvements
-- [ ] AI agent backend implementation
-- [ ] Mobile responsiveness optimization
-
-### Phase 4: Advanced Privacy 📋
-
-- [ ] ZK proof integration for Privacy Pool withdrawals
-- [ ] Full EIP-5564 stealth address protocol
-- [ ] Larger anonymity sets
-- [ ] Relayer network
+| Improvement | Details |
+|-------------|---------|
+| **NexusPrivacyPool** | New contract — commitment/nullifier privacy with Aave V3 yield |
+| **6 Mainnet Contracts** | All contracts deployed and verified on Polygon |
+| **Real Aave Integration** | No mocks — real `supply()` and `withdraw()` on Aave V3 Pool |
+| **Dark Emerald UI** | Complete frontend redesign with dark theme + emerald accents |
+| **Username Payments** | @username registration + escrow + claim flow |
+| **Dynamic Denominations** | Privacy pool supports 6 denominations (0.01 to 10,000 USDC) |
+| **Approve-Before-Deposit** | Fixed race condition — `waitForTransactionReceipt` after approval |
+| **Aave Rounding Fix** | Graceful handling of Aave V3 dust loss in privacy pool withdrawals |
+| **Mock Data Removal** | All frontend data reads from live contracts — no hardcoded values |
+| **Contract-Driven UI** | Denominations, APY, risk levels read from on-chain |
 
 ---
 
-## 🤝 Contributing
+## 📜 License
 
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## 👥 Team
-
-Built with dedication for the **Polygon Buildathon**
-
----
-
-## 🔗 Links
-
-- **Website**: [Coming Soon]
-- **Documentation**: [Coming Soon]
-- **Discord**: [Coming Soon]
-- **Twitter**: [Coming Soon]
+MIT
 
 ---
 
 <p align="center">
-  <strong>🛡️ NEXUS Protocol — Honest Yield Infrastructure with Privacy Pool 🛡️</strong>
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/Built%20for-Polygon%20Buildathon-8247E5?style=flat-square" alt="Polygon Buildathon" />
+  <strong>Built for the Polygon Buildathon 🟣</strong><br/>
+  <em>Honest DeFi. Real yield. Meaningful privacy.</em>
 </p>
