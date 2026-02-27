@@ -155,9 +155,7 @@ export interface UseVaultsReturn {
   ) => Promise<`0x${string}` | undefined>;
   approve: (
     tokenAddress: `0x${string}`,
-    spenderAddress: `0x${string}`,
-    amount: string,
-    decimals: number
+    spenderAddress: `0x${string}`
   ) => Promise<`0x${string}` | undefined>;
   isPending: boolean;
   isConfirming: boolean;
@@ -369,21 +367,19 @@ export function useVaults(): UseVaultsReturn {
     [userAddress, writeContractAsync]
   );
 
-  // Approve function
+  // Approve function — unlimited approval so user only needs to approve once per token
   const approve = useCallback(
     async (
       tokenAddress: `0x${string}`,
-      spenderAddress: `0x${string}`,
-      amount: string,
-      decimals: number
+      spenderAddress: `0x${string}`
     ): Promise<`0x${string}` | undefined> => {
-      const amountParsed = parseUnits(amount, decimals);
+      const maxApproval = BigInt("0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
 
       const hash = await (writeContractAsync as any)({
         address: tokenAddress,
         abi: ERC20_ABI,
         functionName: "approve",
-        args: [spenderAddress, amountParsed],
+        args: [spenderAddress, maxApproval],
       });
 
       return hash;

@@ -24,7 +24,13 @@ import {
 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
-import { parseUnits } from "viem";
+import { createPublicClient, http, parseUnits } from "viem";
+import { polygon } from "viem/chains";
+
+const publicClient = createPublicClient({
+  chain: polygon,
+  transport: http("https://polygon-bor-rpc.publicnode.com"),
+});
 
 export default function StealthPay() {
   const [recipient, setRecipient] = useState("");
@@ -109,9 +115,15 @@ export default function StealthPay() {
     try {
       const tokenInfo = TOKENS[selectedToken as keyof typeof TOKENS];
       const amountBigInt = parseUnits(amount, tokenInfo.decimals);
-      toast.info("Approving token spend...");
+      toast.info("Step 1/2: Approving token spend...");
       const approveTx = await approveToken(tokenInfo.address as `0x${string}`, amount, tokenInfo.decimals);
-      if (approveTx) toast.success("Token approved! Sending payment...");
+      if (approveTx) {
+        toast.info("Waiting for approval confirmation...");
+        await publicClient.waitForTransactionReceipt({ hash: approveTx });
+        toast.success("Token approved! Sending payment...");
+        await new Promise(r => setTimeout(r, 2000));
+      }
+      toast.info("Step 2/2: Sending payment...");
       const sendTx = await sendPayment(formattedRecipient, tokenInfo.address as `0x${string}`, amount, tokenInfo.decimals, note);
       if (sendTx) {
         toast.success(

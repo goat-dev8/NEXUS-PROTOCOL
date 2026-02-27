@@ -16,7 +16,13 @@ import { motion } from "framer-motion";
 import { CheckCircle, ExternalLink, Loader2, Search, Vault } from "lucide-react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
-import { parseUnits } from "viem";
+import { createPublicClient, http, parseUnits } from "viem";
+import { polygon } from "viem/chains";
+
+const publicClient = createPublicClient({
+  chain: polygon,
+  transport: http("https://polygon-bor-rpc.publicnode.com"),
+});
 
 export default function Vaults() {
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -73,22 +79,26 @@ export default function Vaults() {
         selectedVault.asset.decimals
       );
 
-      // Check if we need approval
+      // Check if we need approval — approve unlimited so user only approves once
       if (selectedVault.userAllowance < amountBigInt) {
-        toast.info("Approving token spend...");
+        toast.info("Step 1/2: Approving token spend...");
         const approveTx = await approve(
           selectedVault.asset.address,
-          selectedVault.address,
-          depositAmount,
-          selectedVault.asset.decimals
+          selectedVault.address
         );
 
         if (approveTx) {
+          // Wait for approval tx to be confirmed on-chain before depositing
+          toast.info("Waiting for approval confirmation...");
+          await publicClient.waitForTransactionReceipt({ hash: approveTx });
           toast.success("Token approved! Now depositing...");
+          // Small delay for RPC state propagation
+          await new Promise(r => setTimeout(r, 2000));
         }
       }
 
-      // Deposit
+      // Step 2: Deposit
+      toast.info("Step 2/2: Depositing...");
       const depositTx = await deposit(
         selectedVault.address,
         depositAmount,

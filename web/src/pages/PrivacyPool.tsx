@@ -18,9 +18,16 @@ import {
   ExternalLink,
 } from "lucide-react";
 import { useAccount } from "wagmi";
+import { createPublicClient, http } from "viem";
+import { polygon } from "viem/chains";
 import { usePrivacyPool, generateCommitment, parseNote } from "@/hooks/usePrivacyPool";
 import { PRIVACY_POOL_CONFIG } from "@/lib/config";
 import { toast } from "sonner";
+
+const publicClient = createPublicClient({
+  chain: polygon,
+  transport: http("https://polygon-bor-rpc.publicnode.com"),
+});
 
 const PrivacyPool = () => {
   const { isConnected } = useAccount();
@@ -57,13 +64,18 @@ const PrivacyPool = () => {
 
       // Check allowance
       if (userAllowance < denom.value) {
-        toast.info("Approving USDC...");
-        await approveToken(denom.value);
-        toast.success("USDC approved! Now depositing...");
-        await refetch();
+        toast.info("Step 1/2: Approving USDC...");
+        const approveTxHash = await approveToken(denom.value);
+        if (approveTxHash) {
+          toast.info("Waiting for approval confirmation...");
+          await publicClient.waitForTransactionReceipt({ hash: approveTxHash });
+          toast.success("USDC approved! Now depositing...");
+          await new Promise(r => setTimeout(r, 2000));
+        }
       }
 
       // Deposit
+      toast.info("Step 2/2: Depositing...");
       await deposit(note.commitment, selectedDenom);
       setGeneratedNote(note.noteString);
       toast.success("Deposit successful! Save your privacy note.");
