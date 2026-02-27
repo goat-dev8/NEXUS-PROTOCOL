@@ -98,6 +98,20 @@ const NEXUS_VAULT_ABI = [
     stateMutability: "view",
     type: "function",
   },
+  {
+    inputs: [],
+    name: "getCurrentAPY",
+    outputs: [{ name: "", type: "uint256" }],
+    stateMutability: "pure",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "riskLevel",
+    outputs: [{ name: "", type: "uint8" }],
+    stateMutability: "view",
+    type: "function",
+  },
 ];
 
 export interface VaultInfo {
@@ -183,6 +197,32 @@ export function useVaults(): UseVaultsReturn {
           // Use default
         }
 
+        // Read APY from contract (basis points, e.g. 500 = 5.00%)
+        let apyBps = 500; // default 5%
+        try {
+          const rawApy = (await readContract({
+            address: vault.address as `0x${string}`,
+            abi: NEXUS_VAULT_ABI,
+            functionName: "getCurrentAPY",
+          })) as bigint;
+          apyBps = Number(rawApy);
+        } catch {
+          // Use default
+        }
+
+        // Read risk level from contract
+        let riskLevel = 1;
+        try {
+          const rawRisk = (await readContract({
+            address: vault.address as `0x${string}`,
+            abi: NEXUS_VAULT_ABI,
+            functionName: "riskLevel",
+          })) as number;
+          riskLevel = Number(rawRisk);
+        } catch {
+          // Use default
+        }
+
         // User-specific data
         let userSharesRaw = BigInt(0);
         let userBalanceRaw = BigInt(0);
@@ -253,8 +293,8 @@ export function useVaults(): UseVaultsReturn {
           },
           tvl: formatUnits(totalAssets, tokenInfo.decimals),
           tvlRaw: totalAssets,
-          apy: "5.00", // Default APY
-          riskLevel: 1,
+          apy: (apyBps / 100).toFixed(2),
+          riskLevel,
           userShares: formatUnits(userSharesRaw, 18),
           userSharesRaw,
           userAssets: formatUnits(userAssetsRaw, tokenInfo.decimals),

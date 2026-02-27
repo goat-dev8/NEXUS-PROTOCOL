@@ -1,31 +1,125 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { mockAIRecommendations } from "@/lib/mock-data";
-import { Brain, Send, TrendingUp, Activity } from "lucide-react";
+import { useVaults } from "@/hooks/useVaults";
+import { formatUSD, usePrices } from "@/hooks/usePrices";
+import { useWallet } from "@/hooks/useWallet";
+import { Brain, Send, TrendingUp, Activity, Loader2, Shield } from "lucide-react";
 import { motion } from "framer-motion";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 export default function AIAgent() {
   const [message, setMessage] = useState("");
   const [riskTolerance, setRiskTolerance] = useState([50]);
   const [autoCompound, setAutoCompound] = useState(true);
+  const { isConnected } = useWallet();
+  const { vaults, isLoading } = useVaults();
+  const { prices } = usePrices();
 
-  const chatHistory = [
-    { role: "user", content: "What should I do with my USDC?" },
-    {
-      role: "ai",
-      content:
-        "Based on current market conditions, I recommend depositing 60% into the USDC Vault (4.5% APY via Aave V3, low risk) and using the Privacy Pool for the remaining 40% to break on-chain correlation before withdrawing to a fresh address.",
-    },
-  ];
+  // Generate AI recommendations from real vault data
+  const aiRecommendations = useMemo(() => {
+    if (!vaults || vaults.length === 0) return [];
+    return vaults
+      .sort((a, b) => parseFloat(b.apy) - parseFloat(a.apy))
+      .slice(0, 3)
+      .map((vault) => ({
+        title: `Deposit to ${vault.name}`,
+        apy: `${vault.apy}% APY`,
+        reason: `${vault.description}. TVL: $${parseFloat(vault.tvl).toLocaleString()}`,
+        risk: vault.riskLevel === 1 ? "LOW" : vault.riskLevel === 2 ? "MEDIUM" : "HIGH",
+      }));
+  }, [vaults]);
 
-  const optimizationHistory = [
-    { time: "2 hours ago", action: "Compounded USDC Vault rewards", reason: "Low gas, increased position by $45.67" },
-    { time: "1 day ago", action: "Suggested rebalance to DAI Vault", reason: "Higher yield opportunity detected" },
-    { time: "2 days ago", action: "Monitored Privacy Pool anonymity set", reason: "Set size reached 50, good withdrawal window" },
-  ];
+  // Compute real strategy allocation from user positions
+  const strategyAllocation = useMemo(() => {
+    if (!vaults || vaults.length === 0) return [];
+    let totalValue = 0;
+    const positionValues: { label: string; value: number; color: string }[] = [];
+
+    vaults.forEach((vault) => {
+      const userAssets = parseFloat(vault.userAssets) || 0;
+      if (userAssets > 0) {
+        const tokenKey = vault.asset.symbol.toLowerCase() as keyof typeof prices;
+        const price = prices[tokenKey] || 1;
+        const value = userAssets * price;
+        totalValue += value;
+        positionValues.push({
+          label: vault.asset.symbol,
+          value,
+          color:
+            vault.asset.symbol === "USDC"
+              ? "bg-emerald-400"
+              : vault.asset.symbol === "USDT"
+              ? "bg-emerald-600"
+              : "bg-green-400",
+        });
+      }
+    });
+
+    if (totalValue === 0) {
+      return [
+        { label: "No positions", pct: 100, color: "bg-white/10" },
+      ];
+    }
+
+    return positionValues.map((p) => ({
+      label: p.label,
+      pct: Math.round((p.value / totalValue) * 100),
+      color: p.color,
+    }));
+  }, [vaults, prices]);
+
+  // Generate contextual chat based on real data
+  const chatHistory = useMemo(() => {
+    if (!vaults || vaults.length === 0) {
+      return [
+        { role: "ai" as const, content: "Welcome to Nexus AI. Connect your wallet and deposit to a vault — I'll analyze your positions and suggest optimizations based on real on-chain data." },
+      ];
+    }
+
+    const hasPositions = vaults.some((v) => parseFloat(v.userAssets) > 0);
+    const bestVault = [...vaults].sort((a, b) => parseFloat(b.apy) - parseFloat(a.apy))[0];
+
+    if (!hasPositions) {
+      return [
+        {
+          role: "ai" as const,
+          content: `I can see ${vaults.length} vaults available. The highest-yielding vault is ${bestVault.name} at ${bestVault.apy}% APY. Consider depositing into a vault to start earning yield from Aave V3 on Polygon.`,
+        },
+      ];
+    }
+
+    const activeVaults = vaults.filter((v) => parseFloat(v.userAssets) > 0);
+    return [
+      {
+        role: "ai" as const,
+        content: `You have active positions in ${activeVaults.length} vault${activeVaults.length > 1 ? "s" : ""}. ${activeVaults.map((v) => `${v.asset.symbol}: ${parseFloat(v.userAssets).toLocaleString()} tokens at ${v.apy}% APY`).join(". ")}. I'm monitoring Aave V3 rates in real time.`,
+      },
+    ];
+  }, [vaults]);
+
+  if (!isConnected) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-6">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center">
+          <Brain className="h-12 w-12 text-emerald-400 mx-auto mb-4" />
+          <h1 className="text-2xl font-bold mb-2 text-white">AI Yield Agent</h1>
+          <p className="text-white/40 text-sm mb-6">Connect your wallet to access AI-powered yield optimization</p>
+          <ConnectButton />
+        </motion.div>
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <Loader2 className="h-8 w-8 text-emerald-400 animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -38,7 +132,7 @@ export default function AIAgent() {
         </div>
         <div className="flex items-center gap-2">
           <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
-          <p className="text-white/40 text-sm">Online — Analyzing yield opportunities</p>
+          <p className="text-white/40 text-sm">Online — Analyzing {vaults.length} vaults on Polygon</p>
         </div>
       </motion.div>
 
@@ -47,20 +141,12 @@ export default function AIAgent() {
         <div className="p-5 rounded-2xl border border-white/5 bg-white/[0.02]">
           <h2 className="text-sm font-semibold text-white/60 uppercase tracking-wider mb-4 flex items-center gap-2">
             <Activity className="h-4 w-4 text-emerald-400" />
-            Current Strategy
+            Current Allocation
           </h2>
           <div className="space-y-4">
-            <div>
-              <p className="text-xs text-white/40 mb-0.5">Active Strategy</p>
-              <p className="text-lg font-semibold text-white">Balanced Growth</p>
-            </div>
             <div className="space-y-2">
-              <p className="text-xs text-white/40">Asset Allocation</p>
-              {[
-                { label: "Stablecoins", pct: 45, color: "bg-emerald-400" },
-                { label: "Blue Chips", pct: 35, color: "bg-emerald-600" },
-                { label: "High Yield", pct: 20, color: "bg-green-400" },
-              ].map((item) => (
+              <p className="text-xs text-white/40">Your Vault Positions</p>
+              {strategyAllocation.map((item) => (
                 <div key={item.label}>
                   <div className="flex justify-between text-sm mb-1">
                     <span className="text-white/60">{item.label}</span>
@@ -73,9 +159,9 @@ export default function AIAgent() {
               ))}
             </div>
             <div className="pt-4 border-t border-white/5">
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-white/40">Performance (7d)</span>
-                <span className="text-emerald-400 font-semibold text-lg">+4.32%</span>
+              <div className="flex items-start gap-2 text-xs text-white/30">
+                <Shield className="h-3 w-3 mt-0.5 text-emerald-400/50" />
+                <span>All vaults use Aave V3 on Polygon for yield generation</span>
               </div>
             </div>
           </div>
@@ -83,7 +169,7 @@ export default function AIAgent() {
 
         {/* AI Chat */}
         <div className="lg:col-span-2 p-5 rounded-2xl border border-white/5 bg-white/[0.02]">
-          <h2 className="text-sm font-semibold text-white/60 uppercase tracking-wider mb-4">Chat with AI</h2>
+          <h2 className="text-sm font-semibold text-white/60 uppercase tracking-wider mb-4">AI Analysis</h2>
           <div className="space-y-3 mb-4 max-h-[300px] overflow-y-auto">
             {chatHistory.map((msg, index) => (
               <motion.div key={index} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }}
@@ -110,41 +196,33 @@ export default function AIAgent() {
           </div>
 
           <div className="mt-6 pt-6 border-t border-white/5">
-            <h3 className="text-sm font-semibold text-white/60 uppercase tracking-wider mb-3">AI Recommendations</h3>
+            <h3 className="text-sm font-semibold text-white/60 uppercase tracking-wider mb-3">Recommendations</h3>
             <div className="space-y-2">
-              {mockAIRecommendations.map((rec, index) => (
-                <motion.div key={index} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: index * 0.1 }}
-                  className="p-3 rounded-xl bg-white/[0.02] border border-white/5 hover:border-emerald-500/20 transition-colors">
-                  <div className="flex items-start justify-between mb-2">
-                    <h4 className="text-sm font-medium text-white/80 flex-1">{rec.title}</h4>
-                    <span className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-emerald-500/10 text-emerald-400 rounded-full border border-emerald-500/20">{rec.apy}</span>
-                  </div>
-                  <p className="text-xs text-white/30 mb-2">{rec.reason}</p>
-                  <button className="w-full py-1.5 text-xs font-medium bg-emerald-600 hover:bg-emerald-500 text-white rounded-full transition-colors">Apply Suggestion</button>
-                </motion.div>
-              ))}
+              {aiRecommendations.length === 0 ? (
+                <p className="text-sm text-white/20 py-4 text-center">Loading vault data...</p>
+              ) : (
+                aiRecommendations.map((rec, index) => (
+                  <motion.div key={index} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: index * 0.1 }}
+                    className="p-3 rounded-xl bg-white/[0.02] border border-white/5 hover:border-emerald-500/20 transition-colors">
+                    <div className="flex items-start justify-between mb-2">
+                      <h4 className="text-sm font-medium text-white/80 flex-1">{rec.title}</h4>
+                      <span className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-emerald-500/10 text-emerald-400 rounded-full border border-emerald-500/20">{rec.apy}</span>
+                    </div>
+                    <p className="text-xs text-white/30 mb-2">{rec.reason}</p>
+                    <div className="flex items-center gap-2">
+                      <span className={`px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full border ${
+                        rec.risk === "LOW"
+                          ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
+                          : rec.risk === "MEDIUM"
+                          ? "bg-yellow-500/10 text-yellow-400 border-yellow-500/20"
+                          : "bg-red-500/10 text-red-400 border-red-500/20"
+                      }`}>{rec.risk} Risk</span>
+                    </div>
+                  </motion.div>
+                ))
+              )}
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* Optimization History */}
-      <div className="p-5 rounded-2xl border border-white/5 bg-white/[0.02]">
-        <h2 className="text-sm font-semibold text-white/60 uppercase tracking-wider mb-4 flex items-center gap-2">
-          <TrendingUp className="h-4 w-4 text-emerald-400" />
-          Optimization History
-        </h2>
-        <div className="space-y-3">
-          {optimizationHistory.map((item, index) => (
-            <motion.div key={index} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: index * 0.1 }}
-              className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
-              <div className="flex items-start justify-between mb-1">
-                <p className="font-medium text-white text-sm">{item.action}</p>
-                <span className="text-[10px] text-white/30">{item.time}</span>
-              </div>
-              <p className="text-xs text-white/40">{item.reason}</p>
-            </motion.div>
-          ))}
         </div>
       </div>
 
@@ -172,12 +250,12 @@ export default function AIAgent() {
           </div>
           <div className="space-y-4">
             <div>
-              <Label className="text-white/60 text-xs mb-2 block">Preferred Assets</Label>
+              <Label className="text-white/60 text-xs mb-2 block">Available Vaults</Label>
               <div className="space-y-2">
-                {["USDC", "USDT", "DAI", "MATIC"].map((asset) => (
-                  <div key={asset} className="flex items-center gap-2">
+                {vaults.map((vault) => (
+                  <div key={vault.address} className="flex items-center gap-2">
                     <input type="checkbox" defaultChecked className="rounded accent-emerald-500" />
-                    <span className="text-sm text-white/60">{asset}</span>
+                    <span className="text-sm text-white/60">{vault.asset.symbol} — {vault.apy}% APY</span>
                   </div>
                 ))}
               </div>

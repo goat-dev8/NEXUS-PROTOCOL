@@ -3,6 +3,7 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { motion } from "framer-motion";
 import { Menu, Shield, Wallet } from "lucide-react";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 import { useAccount } from "wagmi";
 
 export const TopBar = () => {
@@ -38,12 +39,12 @@ export const TopBar = () => {
           >
             <Menu className="h-5 w-5 text-white/70" />
           </button>
-          <div className="flex items-center gap-2">
+          <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
             <Shield className="h-5 w-5 text-emerald-400" />
             <span className="font-bold text-base hidden md:block text-white">
               Nexus
             </span>
-          </div>
+          </Link>
         </div>
 
         <div className="flex items-center gap-3">
