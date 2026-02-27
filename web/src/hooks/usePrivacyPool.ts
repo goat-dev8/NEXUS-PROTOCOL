@@ -7,7 +7,7 @@ import { NEXUS_PRIVACY_POOL_ABI, ERC20_ABI } from "@/lib/contracts/abis";
 
 const publicClient = createPublicClient({
   chain: polygon,
-  transport: http("https://polygon-rpc.com"),
+  transport: http("https://polygon-bor-rpc.publicnode.com"),
 });
 
 export interface PoolStats {

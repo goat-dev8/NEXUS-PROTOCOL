@@ -50,6 +50,11 @@ async function main() {
 
   const deployedAddresses: Record<string, string> = {};
 
+  // Helper: wait for block confirmations to avoid nonce conflicts
+  const waitForBlock = async () => {
+    await new Promise(resolve => setTimeout(resolve, 5000));
+  };
+
   // 1. Deploy StealthRegistry
   console.log("1️⃣  Deploying StealthRegistry...");
   const StealthRegistry = await ethers.getContractFactory("StealthRegistry");
@@ -58,6 +63,7 @@ async function main() {
   const stealthRegistryAddress = await stealthRegistry.getAddress();
   deployedAddresses.STEALTH_REGISTRY = stealthRegistryAddress;
   console.log("   ✅ StealthRegistry deployed to:", stealthRegistryAddress);
+  await waitForBlock();
 
   // 2. Deploy NexusFactory
   console.log("\n2️⃣  Deploying NexusFactory...");
@@ -67,6 +73,7 @@ async function main() {
   const nexusFactoryAddress = await nexusFactory.getAddress();
   deployedAddresses.NEXUS_FACTORY = nexusFactoryAddress;
   console.log("   ✅ NexusFactory deployed to:", nexusFactoryAddress);
+  await waitForBlock();
 
   // 3. Create USDC Vault via Factory
   console.log("\n3️⃣  Creating USDC Vault via Factory...");
@@ -82,6 +89,7 @@ async function main() {
   const usdcVaultAddress = await nexusFactory.getVaultForAsset(TOKENS.USDC);
   deployedAddresses.USDC_VAULT = usdcVaultAddress;
   console.log("   ✅ USDC Vault created at:", usdcVaultAddress);
+  await waitForBlock();
 
   // 4. Create USDT Vault via Factory
   console.log("\n4️⃣  Creating USDT Vault via Factory...");
@@ -97,6 +105,7 @@ async function main() {
   const usdtVaultAddress = await nexusFactory.getVaultForAsset(TOKENS.USDT);
   deployedAddresses.USDT_VAULT = usdtVaultAddress;
   console.log("   ✅ USDT Vault created at:", usdtVaultAddress);
+  await waitForBlock();
 
   // 5. Create DAI Vault via Factory
   console.log("\n5️⃣  Creating DAI Vault via Factory...");
@@ -112,6 +121,7 @@ async function main() {
   const daiVaultAddress = await nexusFactory.getVaultForAsset(TOKENS.DAI);
   deployedAddresses.DAI_VAULT = daiVaultAddress;
   console.log("   ✅ DAI Vault created at:", daiVaultAddress);
+  await waitForBlock();
 
   // 6. Deploy NexusPrivacyPool
   console.log("\n6️⃣  Deploying NexusPrivacyPool (USDC)...");
@@ -126,6 +136,7 @@ async function main() {
   const privacyPoolAddress = await privacyPool.getAddress();
   deployedAddresses.PRIVACY_POOL = privacyPoolAddress;
   console.log("   ✅ NexusPrivacyPool deployed to:", privacyPoolAddress);
+  await waitForBlock();
 
   // Register privacy pool in factory
   console.log("\n🔗 Registering privacy pool in factory...");

@@ -36,7 +36,7 @@ const config: HardhatUserConfig = {
       url: POLYGON_RPC_URL,
       accounts: [PRIVATE_KEY],
       chainId: 137,
-      gasPrice: 50000000000, // 50 gwei
+      timeout: 180000,
     },
   },
   etherscan: {

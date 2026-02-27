@@ -16,7 +16,7 @@ import { TOKENS, VAULT_CONFIGS } from "../lib/config";
 // Create a direct viem client to avoid wagmi type issues
 const publicClient = createPublicClient({
   chain: polygon,
-  transport: http("https://polygon-rpc.com"),
+  transport: http("https://polygon-bor-rpc.publicnode.com"),
 });
 
 // Helper function to bypass strict type checking

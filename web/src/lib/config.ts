@@ -3,27 +3,27 @@ import { http } from "wagmi";
 import { polygon } from "wagmi/chains";
 
 // ============ CONTRACT ADDRESSES ============
-// Deployed to Polygon Mainnet on 2025-12-03
+// Deployed to Polygon Mainnet on 2026-02-27
 
 export const CONTRACT_ADDRESSES = {
   STEALTH_REGISTRY:
     import.meta.env.VITE_STEALTH_REGISTRY_ADDRESS ||
-    "0x678e033Ac388BfE5a1b0a98329e98E253854060C",
+    "0x7474DFdA6a63C0743eB06D5559AB161f4C30c22B",
   NEXUS_FACTORY:
     import.meta.env.VITE_NEXUS_FACTORY_ADDRESS ||
-    "0x548eBA09dD9FE4D45F76Cf6a6E42139c16a6A387",
+    "0x7e597aCDbA0Eb5bdb323Ea9e76272a736B5D3831",
   USDC_VAULT:
     import.meta.env.VITE_USDC_VAULT_ADDRESS ||
-    "0x3AA9fb8b22466403f6a3498c99ACDb9A27e80a49",
+    "0xF8aa393F0C9bC260f768E6ce8C421B57360006D8",
   USDT_VAULT:
     import.meta.env.VITE_USDT_VAULT_ADDRESS ||
-    "0x579d7019DbCD1598Ef4757723Baa05c7c31249F4",
+    "0x8931b20fEC39E9b84e43A6bD8dcEa695b5272028",
   DAI_VAULT:
     import.meta.env.VITE_DAI_VAULT_ADDRESS ||
-    "0xfB758bAD4Ee1533E79e3130665178a151D7ad00a",
+    "0xdF90cA5EF64Aa00e72E371f12D4c7594c9866B12",
   PRIVACY_POOL:
     import.meta.env.VITE_PRIVACY_POOL_ADDRESS ||
-    "0x0000000000000000000000000000000000000000",
+    "0x71516c404fb65A20Adcfab74e8BD78331969C45A",
 } as const;
 
 // Alias for easier imports
@@ -109,7 +109,7 @@ export const VAULT_CONFIGS = {
 // ============ WAGMI CONFIG ============
 
 const rpcUrl =
-  import.meta.env.VITE_POLYGON_RPC_URL || "https://polygon-rpc.com";
+  import.meta.env.VITE_POLYGON_RPC_URL || "https://polygon-bor-rpc.publicnode.com";
 const projectId =
   import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID || "nexus-protocol-polygon";
 

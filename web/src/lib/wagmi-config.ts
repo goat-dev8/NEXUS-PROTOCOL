@@ -11,7 +11,7 @@ export const config = getDefaultConfig({
   projectId: WALLETCONNECT_PROJECT_ID,
   chains: [polygon],
   transports: {
-    [polygon.id]: http("https://polygon-rpc.com"),
+    [polygon.id]: http("https://polygon-bor-rpc.publicnode.com"),
   },
 });
 
