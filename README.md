@@ -137,6 +137,93 @@ Standardized vault deployment and registry:
 
 ---
 
+## 🖥️ Frontend Application (9 Pages)
+
+The web app provides a full-featured DeFi dashboard with 9 navigable pages:
+
+### 📊 Dashboard (`/app`)
+- **Portfolio stats grid** — Total Balance (USD), MATIC Balance, Active Positions, Pending Payments
+- **Quick actions** — One-click navigation to Deposit, Privacy Pool, Send Payment, AI Agent
+- **Active positions list** — Shows each vault position with deposited amount, USD value, APY
+- **AI suggestions panel** — Top 3 vaults ranked by APY with risk labels and descriptions
+- **Available vaults table** — All vaults with name, asset, TVL, APY, risk level, and deposit button
+- **Live data** — All values read from on-chain contracts + CoinGecko price feeds
+
+### 🏦 Vaults (`/app/vaults`)
+- **Featured vault banner** — Highlights top vault with APY, TVL, risk level, user position
+- **Category filters** — All, Stablecoin, Blue Chip, High Yield
+- **Search** — Filter vaults by name or symbol
+- **Vault cards** — Each shows APY, TVL, risk, fees (deposit/withdraw), user balance and position
+- **Deposit/Withdraw modal** — Amount input, MAX button, fee preview, USD equivalent, tx hash link to Polygonscan
+- **Unlimited ERC-20 approval** — Single approval for lifetime access
+
+### 🕵️ Privacy Pool (`/app/privacy`)
+- **Pool stats** — TVL, Anonymity Set size, Yield Earned, Total Deposits (from contract)
+- **Deposit tab** — Denomination grid (6 options), USDC balance, commitment generation, privacy note display with copy/download as .txt
+- **Withdraw tab** — Paste privacy note, enter any recipient address, note validation with parsed amount
+- **Anonymity set visualization** — Per-denomination progress bars showing deposit count
+- **Privacy comparison panel** — Standard Transfer vs Username Payments vs Privacy Pool
+
+### 💸 Payments (`/app/stealth`)
+- **Username registration** — Register @username with MATIC fee, format validation (3-20 chars, lowercase+numbers+underscore)
+- **Send payment** — Recipient @username input, multi-asset selector (USDC/USDT/DAI/MATIC), amount input with MAX, optional encrypted note, gas estimate
+- **Receive panel** — Copyable wallet address and @username, pending payments total, Polygonscan contract link
+- **Pending claims** — List of unclaimed payments with one-click Claim button
+- **Transaction history** — Filterable by All/Sent/Received with status (Claimed/Pending), payment IDs
+
+### 🤖 AI Agent (`/app/ai`)
+- **Current allocation** — Visual breakdown of user's vault positions with percentage bars
+- **AI chat interface** — Contextual recommendations generated from real vault data (APY, TVL, risk)
+- **Recommendations** — Top 3 vaults sorted by APY with risk labels
+- **Strategy settings** — Risk tolerance slider (Conservative ↔ Aggressive), auto-compound toggle, per-vault selection checkboxes
+
+### 📈 Portfolio (`/app/portfolio`)
+- **Stats grid** — Total Balance (USD), Active Positions, Average APY, MATIC Balance
+- **Portfolio summary** — List of active vault positions with icon, asset name, USD value, APY
+- **Asset allocation** — Donut-style visualization with percentage breakdown by token
+- **Positions table** — Asset, Vault, Amount, Value (USD), APY
+
+### 🏛️ Governance (`/app/governance`)
+- **Coming Soon banner** — Governance contract in development
+- **Governance roadmap** — NXS Token Launch → Governor Contract → Proposal System → Fee & Parameter Governance
+- **Deployed contracts list** — Shows live status of all 6 contracts + planned NexusGovernor
+
+### 🪪 Identity (`/app/identity`)
+- **Verification status** — Shows verified badge count (e.g., 3/6)
+- **6 verification badges** — Humanity, Age 18+, Wallet Age 6mo+, KYC-Free, Sybil-Resistant, DAO Contributor
+- **Verification actions** — Prove Humanity, Verify Age, Check Wallet History buttons
+- **Privacy note** — Attestation-based verification preserves user privacy
+
+### ⚙️ Settings (`/app/settings`)
+- **Profile** — Display name, username configuration
+- **Security** — 2FA toggle, transaction signing toggle
+- **Notifications** — Deposit confirmations, yield updates, governance proposals, privacy pool alerts
+- **Network** — Custom RPC endpoint, testnet mode toggle, connected network display (Polygon, Chain ID 137)
+- **Privacy** — Hide balances toggle, private transactions routing toggle
+- **Theme** — Dark mode toggle, accent color picker (5 colors)
+
+### 🌐 Landing Page (`/`)
+- **Hero section** — Headline, tagline, Connect Wallet / Launch App CTAs
+- **Stats strip** — TVL, Active Depositors, Contracts Deployed
+- **Feature cards** — ERC-4626 Yield Vaults, Privacy Pool, @Username Payments, AI Yield Agent
+- **How It Works** — 4 steps: Connect → Deposit → Earn → Private
+- **Privacy model comparison** — Public (Vaults) vs Address-Abstracted (Payments) vs Link-Broken (Privacy Pool)
+- **Security badges** — 6 Mainnet Contracts, ReentrancyGuard + SafeERC20, Non-Custodial, Open Source
+
+---
+
+## 🔗 Integrations
+
+| Integration | Purpose |
+|------------|---------|
+| **Aave V3 Pool** | Real yield generation — `supply()` and `withdraw()` on Polygon mainnet |
+| **CoinGecko API** | Live token prices (MATIC, USDC, USDT, DAI, ETH) — auto-refresh every 60s |
+| **RainbowKit** | Multi-wallet connection (MetaMask, WalletConnect, Coinbase, etc.) |
+| **wagmi v2 + viem** | React hooks for contract reads/writes and chain management |
+| **Polygonscan** | Transaction links after every on-chain operation |
+
+---
+
 ## 🔒 Privacy Model — Honest Claims
 
 > **We are transparent about what NEXUS Protocol does and doesn't provide.**
