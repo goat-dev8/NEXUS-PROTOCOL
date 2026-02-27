@@ -47,7 +47,7 @@ const PrivacyPool = () => {
   } = usePrivacyPool();
 
   const [activeTab, setActiveTab] = useState<"deposit" | "withdraw">("deposit");
-  const [selectedDenom, setSelectedDenom] = useState(0);
+  const [selectedDenom, setSelectedDenom] = useState(3); // Default to 0.01 USDC (smallest)
   const [generatedNote, setGeneratedNote] = useState<string | null>(null);
   const [noteCopied, setNoteCopied] = useState(false);
   const [withdrawNote, setWithdrawNote] = useState("");
@@ -56,16 +56,22 @@ const PrivacyPool = () => {
 
   const handleDeposit = async () => {
     try {
-      const denom = PRIVACY_POOL_CONFIG.denominations[selectedDenom];
-      if (!denom) return;
+      const denom = denominations[selectedDenom];
+      if (!denom) {
+        toast.error("Please select a denomination");
+        return;
+      }
+
+      const denomAmount = BigInt(denom.amount);
 
       // Generate commitment
-      const note = generateCommitment(selectedDenom, denom.amount);
+      const note = generateCommitment(selectedDenom, denom.amountFormatted);
 
-      // Check allowance
-      if (userAllowance < denom.value) {
+      // Check allowance — use unlimited approval
+      if (userAllowance < denomAmount) {
         toast.info("Step 1/2: Approving USDC...");
-        const approveTxHash = await approveToken(denom.value);
+        const maxApproval = BigInt("0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+        const approveTxHash = await approveToken(maxApproval);
         if (approveTxHash) {
           toast.info("Waiting for approval confirmation...");
           await publicClient.waitForTransactionReceipt({ hash: approveTxHash });
@@ -239,7 +245,7 @@ const PrivacyPool = () => {
                 <div>
                   <label className="text-sm font-medium mb-3 block">Select Denomination</label>
                   <div className="grid grid-cols-3 gap-3">
-                    {PRIVACY_POOL_CONFIG.denominations.map((denom, i) => (
+                    {denominations.map((denom, i) => (
                       <button
                         key={i}
                         onClick={() => setSelectedDenom(i)}
@@ -249,11 +255,9 @@ const PrivacyPool = () => {
                             : "border-border/50 hover:border-emerald-500/50"
                         }`}
                       >
-                        <p className="text-lg font-bold">{denom.label}</p>
+                        <p className="text-lg font-bold">{denom.amountFormatted} USDC</p>
                         <p className="text-xs text-muted-foreground mt-1">
-                          {denominations[i]
-                            ? `${denominations[i].anonymitySetSize} deposits`
-                            : "—"}
+                          {denom.anonymitySetSize} deposits
                         </p>
                       </button>
                     ))}
@@ -294,7 +298,7 @@ const PrivacyPool = () => {
                   ) : (
                     <>
                       <Lock className="h-5 w-5" />
-                      Deposit {PRIVACY_POOL_CONFIG.denominations[selectedDenom]?.label}
+                      Deposit {denominations[selectedDenom]?.amountFormatted || "—"} USDC
                     </>
                   )}
                 </button>

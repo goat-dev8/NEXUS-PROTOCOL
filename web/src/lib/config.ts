@@ -150,5 +150,8 @@ export const PRIVACY_POOL_CONFIG = {
     { amount: "100", label: "100 USDC", value: 100_000000n },
     { amount: "1000", label: "1,000 USDC", value: 1000_000000n },
     { amount: "10000", label: "10,000 USDC", value: 10000_000000n },
+    { amount: "0.01", label: "0.01 USDC", value: 10000n },
+    { amount: "0.1", label: "0.1 USDC", value: 100000n },
+    { amount: "1", label: "1 USDC", value: 1000000n },
   ],
 } as const;
