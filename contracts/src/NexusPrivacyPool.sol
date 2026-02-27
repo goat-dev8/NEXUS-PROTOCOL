@@ -250,21 +250,29 @@ contract NexusPrivacyPool is Ownable, ReentrancyGuard {
 
         uint256 amount = denominations[_denominationIndex].amount;
 
-        // Withdraw from Aave
-        AAVE_POOL.withdraw(address(token), amount, address(this));
+        // Withdraw from Aave (handle rounding: Aave may have 1-2 unit dust loss)
+        uint256 aBalance = aToken.balanceOf(address(this));
+        uint256 withdrawAmount = amount > aBalance ? aBalance : amount;
+        if (withdrawAmount > 0) {
+            AAVE_POOL.withdraw(address(token), withdrawAmount, address(this));
+        }
+
+        // Use actual USDC balance available (handles Aave rounding dust)
+        uint256 available = token.balanceOf(address(this));
+        uint256 payout = amount > available ? available : amount;
 
         // Calculate relayer fee (if relayer is set)
         uint256 relayerFee = 0;
         if (_relayer != address(0)) {
-            relayerFee = (amount * RELAYER_FEE_BPS) / BPS_DENOMINATOR;
+            relayerFee = (payout * RELAYER_FEE_BPS) / BPS_DENOMINATOR;
             token.safeTransfer(_relayer, relayerFee);
         }
 
         // Transfer remaining to recipient
-        uint256 netAmount = amount - relayerFee;
+        uint256 netAmount = payout - relayerFee;
         token.safeTransfer(_recipient, netAmount);
 
-        totalWithdrawn += amount;
+        totalWithdrawn += payout;
 
         emit Withdrawal(
             _recipient,

@@ -23,7 +23,7 @@ export const CONTRACT_ADDRESSES = {
     "0xdF90cA5EF64Aa00e72E371f12D4c7594c9866B12",
   PRIVACY_POOL:
     import.meta.env.VITE_PRIVACY_POOL_ADDRESS ||
-    "0x71516c404fb65A20Adcfab74e8BD78331969C45A",
+    "0x740a7a9191d5F8aB64C35C1e2Aa95A4FE4F57a5b",
 } as const;
 
 // Alias for easier imports
