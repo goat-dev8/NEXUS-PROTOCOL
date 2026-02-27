@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+    <defs>
+        <!-- Main gradient - purple to cyan -->
+        <linearGradient id="mainGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#8B5CF6" />
+            <stop offset="50%" style="stop-color:#6366F1" />
+            <stop offset="100%" style="stop-color:#06B6D4" />
+        </linearGradient>
+
+        <!-- Glow gradient -->
+        <linearGradient id="glowGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#A78BFA" />
+            <stop offset="100%" style="stop-color:#22D3EE" />
+        </linearGradient>
+
+        <!-- Background gradient -->
+        <radialGradient id="bgGradient" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" style="stop-color:#1E1B4B" />
+            <stop offset="100%" style="stop-color:#0F0D1A" />
+        </radialGradient>
+
+        <!-- Glow filter -->
+        <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="8" result="coloredBlur" />
+            <feMerge>
+                <feMergeNode in="coloredBlur" />
+                <feMergeNode in="SourceGraphic" />
+            </feMerge>
+        </filter>
+
+        <!-- Inner glow -->
+        <filter id="innerGlow">
+            <feGaussianBlur stdDeviation="4" result="blur" />
+            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+        </filter>
+    </defs>
+
+    <!-- Background circle -->
+    <circle cx="256" cy="256" r="250" fill="url(#bgGradient)" stroke="url(#mainGradient)"
+        stroke-width="4" />
+
+    <!-- Outer ring glow effect -->
+    <circle cx="256" cy="256" r="220" fill="none" stroke="url(#glowGradient)" stroke-width="2"
+        opacity="0.5" />
+
+    <!-- Shield/Vault shape - representing privacy -->
+    <path d="M256 80 L380 140 L380 280 C380 340 330 400 256 440 C182 400 132 340 132 280 L132 140 Z"
+        fill="none"
+        stroke="url(#mainGradient)"
+        stroke-width="8"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        filter="url(#glow)" />
+
+    <!-- Inner shield fill with transparency -->
+    <path
+        d="M256 100 L360 152 L360 276 C360 328 316 380 256 416 C196 380 152 328 152 276 L152 152 Z"
+        fill="url(#bgGradient)"
+        opacity="0.8" />
+
+    <!-- N letter - stylized -->
+    <g filter="url(#glow)">
+        <!-- Left vertical bar -->
+        <path d="M195 200 L195 320"
+            stroke="url(#mainGradient)"
+            stroke-width="24"
+            stroke-linecap="round" />
+
+        <!-- Diagonal -->
+        <path d="M195 200 L317 320"
+            stroke="url(#mainGradient)"
+            stroke-width="24"
+            stroke-linecap="round" />
+
+        <!-- Right vertical bar -->
+        <path d="M317 200 L317 320"
+            stroke="url(#mainGradient)"
+            stroke-width="24"
+            stroke-linecap="round" />
+    </g>
+
+    <!-- Decorative dots - representing network/nodes -->
+    <circle cx="256" cy="140" r="8" fill="url(#glowGradient)" filter="url(#glow)" />
+    <circle cx="180" cy="360" r="6" fill="url(#glowGradient)" opacity="0.8" />
+    <circle cx="332" cy="360" r="6" fill="url(#glowGradient)" opacity="0.8" />
+
+    <!-- Lock keyhole - privacy symbol -->
+    <circle cx="256" cy="370" r="12" fill="url(#mainGradient)" />
+    <rect x="250" y="370" width="12" height="20" rx="2" fill="url(#mainGradient)" />
+</svg>
